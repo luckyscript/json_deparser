@@ -22,7 +22,6 @@ let deparseType = {
         return result.join("");
     },
     'Array': function (astValue) {
-        console.log(astValue)
         let result = ['['];
         let len = astValue.length;
         astValue.forEach((v, i) => {
@@ -46,7 +45,9 @@ let deparseType = {
         return result.join("");
     }
 }
-module.exports = function deparse(ast) {
+module.exports = function deparse(ast, format) {
+    if (format) {
+        
+    }
     return deparseType[ast.type](ast.value);
 }
-// {"value":[{"key":"str","value":"test","children":[],"type":"String","comment":""}],"type":"Object"}
