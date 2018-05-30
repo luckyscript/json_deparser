@@ -27,7 +27,6 @@ describe('deparse', function () {
 		];
 	jsonArray.forEach(v => {
 		it(`${v}: `, function () {
-			console.log(parse(v));
 			let input = JSON.parse(v);
 			let output = JSON.parse(deparse(parse(v)));
         	expect(input).to.deep.equal(output)
