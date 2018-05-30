@@ -1,15 +1,16 @@
+const debug = require('debug')('deparse:info')
 let deparseType = {
     'Object': function (astValue, depth=0) {
         let indent = this.config.indent;
         let result = ['{', '\n'];
-        astValue.forEach(v => {
+        let len = astValue.length;
+        astValue.forEach((v, i) => {
             result.push(indent.repeat(depth+1),'"', v.key, '": ');
             switch(v.type) {
                 case 'String': 
                     result.push('"',v.value,'"');
                     break;
                 case 'Array':
-                    console.log(v.children)
                     result.push(deparseType['Array'](v.children, depth+1));
                     break;
                 case 'Object':
@@ -18,6 +19,13 @@ let deparseType = {
                 default:
                     result.push(v.value);
             }
+            if(i != len -1)
+                result.push(',');
+            if(v.comment) {
+                result.push(` // ${v.comment}`)
+            }
+            if(i != len -1)
+                result.push('\n');
         })
         result.push('\n',indent.repeat(depth),'}')
         return result.join("");
@@ -53,6 +61,6 @@ let deparseType = {
 module.exports = function deparse(ast, config) {
     deparseType.config = Object.assign(deparseType.config, config)
     let result = deparseType[ast.type](ast.value);
-    console.log(result);
+    debug(result);
     return result;
 }
